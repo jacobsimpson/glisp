@@ -13,16 +13,16 @@ func TestParse(t *testing.T) {
 
 	tests := []struct {
 		input string
-		want  Expression
+		want  []Expression
 	}{
 		{
 			input: `(display "hello")`,
-			want:  &SExpression{left: &Symbol{"display"}, right: &SExpression{left: &String{"hello"}}},
+			want:  []Expression{&SExpression{left: &Symbol{"display"}, right: &SExpression{left: &String{"hello"}}}},
 		},
 		{
-			input: `(sum     1
+			input: `(car     1
 			2                 3)`,
-			want: &SExpression{left: &Symbol{"sum"}, right: &SExpression{left: &Integer{1}, right: &SExpression{left: &Integer{2}, right: &SExpression{left: &Integer{3}}}}},
+			want: []Expression{&SExpression{left: &Symbol{"car"}, right: &SExpression{left: &Integer{1}, right: &SExpression{left: &Integer{2}, right: &SExpression{left: &Integer{3}}}}}},
 		},
 	}
 

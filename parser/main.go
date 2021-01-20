@@ -52,19 +52,26 @@ func (s *SExpression) String() string {
 	return fmt.Sprintf("(%v . %v)", s.left, s.right)
 }
 
-func Parse(tokens *tokenizer.Tokenizer) (Expression, error) {
+func Parse(tokens *tokenizer.Tokenizer) ([]Expression, error) {
+	results := []Expression{}
+
 	for tokens.Next() {
 		token := tokens.Token()
 		switch token.Type {
 		case tokenizer.OpenParen:
-			return list(tokens)
+			l, err := list(tokens)
+			if err != nil {
+				return nil, err
+			}
+			results = append(results, l)
 		case tokenizer.CloseParen:
 			return nil, fmt.Errorf("found %q without an open", ")")
 		default:
 			return nil, fmt.Errorf("found token outside of list")
 		}
 	}
-	return nil, fmt.Errorf("extra stuff")
+
+	return results, nil
 }
 
 func list(tokens *tokenizer.Tokenizer) (Expression, error) {
