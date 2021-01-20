@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"glisp/parser"
 	"glisp/tokenizer"
 	"os"
 )
@@ -21,7 +22,11 @@ func main() {
 	r := bufio.NewReader(f)
 	t := tokenizer.New(r)
 
-	for t.Next() {
-		fmt.Printf("%s\n", t.Token())
+	expression, err := parser.Parse(t)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to parse: %+v\n", err)
+		os.Exit(1)
 	}
+
+	fmt.Printf("%+v\n", expression)
 }

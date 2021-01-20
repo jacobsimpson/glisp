@@ -5,8 +5,20 @@ import (
 	"io"
 )
 
+type TokenType int
+
+const (
+	Symbol TokenType = iota
+	String
+	Integer
+	OpenParen
+	CloseParen
+)
+
 type Token struct {
-	Raw string
+	Type  TokenType
+	Value string
+	Raw   string
 }
 
 func (t *Token) String() string {
@@ -35,11 +47,11 @@ func readToken(scanner io.RuneScanner) *Token {
 		}
 
 		if r == '(' {
-			return &Token{Raw: string(r)}
+			return &Token{Type: OpenParen, Raw: string(r), Value: string(r)}
 		} else if r == ')' {
-			return &Token{Raw: string(r)}
+			return &Token{Type: CloseParen, Raw: string(r), Value: string(r)}
 		} else if r == '\'' {
-			return &Token{Raw: string(r)}
+			return &Token{Type: String, Raw: string(r), Value: string(r)}
 		} else if isDigit(r) {
 			return readInteger(scanner, r)
 		} else if isSymbolRune(r) {
@@ -74,7 +86,7 @@ func readInteger(scanner io.RuneScanner, first rune) *Token {
 			result += string(r)
 		default:
 			scanner.UnreadRune()
-			return &Token{Raw: result}
+			return &Token{Type: Integer, Raw: result, Value: result}
 		}
 	}
 
@@ -99,7 +111,7 @@ func readSymbol(scanner io.RuneScanner, first rune) *Token {
 
 		if isWhitespace(r) || r == '(' || r == ')' {
 			scanner.UnreadRune()
-			return &Token{Raw: result}
+			return &Token{Type: Symbol, Raw: result, Value: result}
 		}
 		result += string(r)
 	}
@@ -118,7 +130,7 @@ func readString(scanner io.RuneScanner, first rune) *Token {
 		}
 		if r == first {
 			result += string(r)
-			return &Token{Raw: result}
+			return &Token{Type: String, Raw: result, Value: result[1 : len(result)-1]}
 		}
 		result += string(r)
 	}
