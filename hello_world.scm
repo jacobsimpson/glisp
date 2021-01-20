@@ -1,3 +1,4 @@
-(display "this is the thing")
+(display "this is the thing\n")
 
-(display '(sum 1 2 3))
+(display (+ 1 2 3))
+(newline)
