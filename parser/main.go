@@ -78,7 +78,6 @@ func list(tokens *tokenizer.Tokenizer) (Expression, error) {
 	var head, last *SExpression
 	for tokens.Next() {
 		token := tokens.Token()
-		//fmt.Printf("Processing token %s\n", token)
 		switch token.Type {
 		case tokenizer.OpenParen:
 			e, err := list(tokens)

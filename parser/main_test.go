@@ -24,6 +24,17 @@ func TestParse(t *testing.T) {
 			2                 3)`,
 			want: []Expression{&SExpression{left: &Symbol{"car"}, right: &SExpression{left: &Integer{1}, right: &SExpression{left: &Integer{2}, right: &SExpression{left: &Integer{3}}}}}},
 		},
+		{
+			input: `(+ 1 2)`,
+			want:  []Expression{&SExpression{left: &Symbol{"+"}, right: &SExpression{left: &Integer{1}, right: &SExpression{left: &Integer{2}}}}},
+		},
+		{
+			input: `(display (+ 1 2))`,
+			want: []Expression{
+				&SExpression{
+					left:  &Symbol{"display"},
+					right: &SExpression{left: &SExpression{left: &Symbol{"+"}, right: &SExpression{left: &Integer{1}, right: &SExpression{left: &Integer{2}}}}}}},
+		},
 	}
 
 	for _, test := range tests {

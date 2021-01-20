@@ -54,7 +54,7 @@ func readToken(scanner io.RuneScanner) *Token {
 			return &Token{Type: String, Raw: string(r), Value: string(r)}
 		} else if isDigit(r) {
 			return readInteger(scanner, r)
-		} else if isSymbolRune(r) {
+		} else if isSymbolFirstRune(r) {
 			return readSymbol(scanner, r)
 		} else if isStringDelimiter(r) {
 			return readString(scanner, r)
@@ -93,8 +93,8 @@ func readInteger(scanner io.RuneScanner, first rune) *Token {
 	return nil
 }
 
-func isSymbolRune(r rune) bool {
-	return 'a' <= r && r <= 'z' || 'A' <= r && r <= 'Z'
+func isSymbolFirstRune(r rune) bool {
+	return !isWhitespace(r) && !isDigit(r) && !isStringDelimiter(r)
 }
 
 func isWhitespace(r rune) bool {
