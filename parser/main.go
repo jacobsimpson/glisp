@@ -23,22 +23,22 @@ func (i *Integer) Right() Expression { return nil }
 func (i *Integer) String() string    { return fmt.Sprintf("%d", i.value) }
 
 type String struct {
-	value string
+	Value string
 }
 
 func (s *String) IsAtom() bool      { return true }
 func (s *String) Left() Expression  { return nil }
 func (s *String) Right() Expression { return nil }
-func (s *String) String() string    { return fmt.Sprintf("%q", s.value) }
+func (s *String) String() string    { return fmt.Sprintf("%q", s.Value) }
 
 type Symbol struct {
-	name string
+	Name string
 }
 
 func (s *Symbol) IsAtom() bool      { return true }
 func (s *Symbol) Left() Expression  { return nil }
 func (s *Symbol) Right() Expression { return nil }
-func (s *Symbol) String() string    { return s.name }
+func (s *Symbol) String() string    { return s.Name }
 
 type SExpression struct {
 	left  Expression
